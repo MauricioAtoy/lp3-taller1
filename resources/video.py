@@ -59,6 +59,9 @@ class Video(Resource):
         Returns:
             VideoModel: El video solicitado
         """
+        video = abort_if_video_doesnt_exist(video_id)
+        return video, 200
+    
         # TODO
         pass
     
