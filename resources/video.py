@@ -76,6 +76,17 @@ class Video(Resource):
         Returns:
             VideoModel: El video creado
         """
+        if VideoModel.query.filter_by(id=video_id).first():
+            abort(409, message=f"ya existe un video con el ID {video_id}")
+        data = request.get_json()
+        new_video = VideoModel(
+            id=video_id,
+            nombre=data.get("nombre"),
+            descripcion=data.get("descripcion")
+        )
+        db.session.add(new_video)
+        db.session.commit()
+        return new_video, 201
         # TODO
         pass
     
