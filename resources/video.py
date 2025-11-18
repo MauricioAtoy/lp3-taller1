@@ -60,7 +60,20 @@ class Video(Resource):
             VideoModel: El video solicitado
         """
         video = abort_if_video_doesnt_exist(video_id)
-        return video, 200
+        # Añadir búsqueda y filtrado
+        query = Video.query
+        search = request.args.get('search')
+        if search:
+            query = query.filter(Video.title.ilike(f"%{search}%"))
+
+        # Filtrado por categoría
+        category = request.args.get('category')
+        if category:
+            query = query.filter_by(category=category)
+
+        videos = query.all()
+        result = [{"id": v.id, "title": v.title, "description": v.description, "category": v.category} for v in videos]
+        return video, 200, jsonify(result)
     
         # TODO
         pass
