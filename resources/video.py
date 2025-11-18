@@ -126,5 +126,12 @@ class Video(Resource):
             str: Mensaje vacío con código 204
         """
         # TODO
+        video = VideoModel.query.filter_by(id=video_id).first()
+        if not video:
+            abort(404, message=f"No se encontró un video con ID {video_id}")
+        db.session.delete(video)
+        db.session.commit()
+
+        return "", 204
         pass
 
