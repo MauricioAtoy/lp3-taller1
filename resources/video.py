@@ -102,6 +102,17 @@ class Video(Resource):
             VideoModel: El video actualizado
         """
         # TODO
+        video = VideoModel.query.filter_by(id=video_id).first()
+        if "title" in data:
+            video.title = data["title"]
+        if "description" in data:
+            video.description = data["description"]
+        if "url" in data:
+            video.url = data["url"]
+
+        db.session.commit()
+        return video, 200
+        
         pass
     
     def delete(self, video_id):
